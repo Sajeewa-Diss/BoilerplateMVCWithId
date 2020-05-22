@@ -12,6 +12,7 @@ using BoilerplateMVCWithId.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using BoilerplateMVCWithId.Models;
 
 namespace BoilerplateMVCWithId
 {
@@ -32,6 +33,17 @@ namespace BoilerplateMVCWithId
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            //configure a particular option from the settings as a whole!
+            services.Configure<PositionOptions>(Configuration.GetSection("Position"));
+
+            //ditto for adding a connection string
+            //services.Configure<MyDatabaseOptions>(options => {
+            //    options.ConnectionString = Configuration.GetConnectionString("DefaultConnection"); });
+
+            // Add the whole configuration object here - but not necessary for a default implementation as it is already available since Core 2.0.
+            //services.AddSingleton<IConfiguration>(Configuration);
+            
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
